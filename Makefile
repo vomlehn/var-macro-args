@@ -40,6 +40,9 @@ src/test.cc: tests/test.c
 src/test.c: tests/test.c
 	cp $^ $@
 
+README: README.md
+	pandoc --from=gfm --to=plain $^ -o README
+
 .PHONY: clean
 clean:
 	rm -rf src bin
