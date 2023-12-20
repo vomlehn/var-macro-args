@@ -9,7 +9,7 @@ CXFLAGS += -g -ggdb
 # Kind of a cheat
 $(shell mkdir -p bin src)
 
-all: example-c example-cc
+all: bin/example-c bin/example-cc
 
 .PHONY: test
 test: bin/test-c bin/test-cc
@@ -22,7 +22,10 @@ bin/example-c: src/example.c include/var-macro-args.h
 bin/example-cc: src/example.cc include/var-macro-args.h
 	cc $(CXXFLAGS) -o $@ $(filter-out *.h,$^)
 
-src/example.cc: src/example.c
+src/example.c: tests/example.cc
+	cp $^ $@
+
+src/example.cc: tests/example.cc
 	cp $^ $@
 
 bin/test-c: src/test.c include/var-macro-args.h

@@ -93,6 +93,7 @@ static void print_args(int n, ...) {
 #define PRINT_ARG(arg)  sizeof(arg), &arg
 #define PRINT_ARGS(...) print_args(ARG_COUNT(__VA_ARGS__), \
     PROCESS_ARGS(PRINT_ARG, __VA_ARGS__))
+
     PRINT_ARGS(value1, value2);
     PRINT_ARGS(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
 

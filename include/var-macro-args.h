@@ -23,6 +23,17 @@
  *                  the output will be the argument list, separated by
  *                  commas.
  *
+ *                  Given the above definition, we can define a macro to
+ *                  print a list of numbers using a C function:
+ *
+ *                      static void print_args(int n, ...);
+ *
+ *                  with a variable number of arguments:
+ *
+ *                      #define PRINT_LIST(...) \
+ *                          print_args(ARG_COUNT(__VA_ARGS), \
+ *                              PROCESS_ARGS(MY_MACRO, __VA_ARGS)
+ *
  *                  Not only is it nice to have a short name for a very
  *                  common case, but it's not possible to use
  *                  PROCESS_SEP_ARGS with a comma as the specified
@@ -72,9 +83,9 @@
  * them as arguments.
  */
 #define __PROC_ARGS_IMPL(macro, count, ...) \
-    __PROC_ARG##count(macro, __VA_ARGS__)
+    __PROC_ARG##count(macro, ##__VA_ARGS__)
 #define __PROC_COUNTED_ARGS(macro, count, ...) \
-    __PROC_ARGS_IMPL(macro, count, __VA_ARGS__)
+    __PROC_ARGS_IMPL(macro, count, ##__VA_ARGS__)
 #define PROCESS_ARGS(macro, ...) \
     __PROC_COUNTED_ARGS(macro, ARG_COUNT(__VA_ARGS__), __VA_ARGS__)
 
