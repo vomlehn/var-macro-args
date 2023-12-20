@@ -2,6 +2,7 @@
  * Example of using var-macro-args.h
  */
 
+#include <assert.h>
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -64,26 +65,48 @@ static void print_args(int n, ...) {
     struct { char a[10]; } v10 = {.a = {10, 20, 30, 40, 50, 60, 70, 80, 90,
          100}};
     int sum1, sum2;
+    int n;
    
-    printf("Counting zero argument: %d\n", ARG_COUNT());
-    printf("Counting one argument: %d\n", ARG_COUNT(one));
-    printf("Counting two arguments: %d\n", ARG_COUNT(one, two));
-    printf("Counting nine arguments: %d\n", ARG_COUNT(one, two, three,
-        four, five, six, seven, eight, nine));
-    printf("Counting ten arguments: %d\n", ARG_COUNT(one, two, three,
-        four, five, six, seven, eight, nine, ten));
+    n = ARG_COUNT();
+    printf("Counting zero argument: %d\n", n);
+    assert(n == 0);
+    n = ARG_COUNT(one);
+    printf("Counting one argument: %d\n", n);
+    assert(n == 1);
+    n = ARG_COUNT(one, two);
+    printf("Counting two arguments: %d\n", n);
+    assert(n == 2);
+    n = ARG_COUNT(one, two, three, four, five, six, seven, eight, nine);
+    printf("Counting nine arguments: %d\n", n);
+    assert(n == 9);
+
+    n = ARG_COUNT(one, two, three, four, five, six, seven, eight, nine, ten);
+    printf("Counting ten arguments: %d\n", n);
+    assert(n == 10);
 
     print_args(0);
+
+/*
+ * Define a macro that takes an argument and turns into a byte
+ * count and a pointer to the argument
+ */
+#define PRINT_ARG(arg)  sizeof(arg), &arg
 #define PRINT_ARGS(...) print_args(ARG_COUNT(__VA_ARGS__), \
-    PROCESS_ARGS(__VA_ARGS__))
+    PROCESS_ARGS(PRINT_ARG, __VA_ARGS__))
     PRINT_ARGS(value1, value2);
     PRINT_ARGS(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
 
-#define SUM_ARGS(...) PROCESS_SEP_ARGS(+, __VA_ARGS__)
+/*
+ * This macro just outputs the argument plus one
+ */
+#define SUM_ARG(sep, arg)    (arg + 1)
+#define SUM_ARGS(...) PROCESS_SEP_ARGS(SUM_ARG, +, __VA_ARGS__)
     sum1 = SUM_ARGS(1, 2);
-    printf("sum1 is %d, should be 3\n", sum1);
+    printf("sum1 is %d, should be 5\n", sum1);
+    assert(sum1 == 5);
     sum2 = SUM_ARGS(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    printf("sum2 is %d, should be 45\n", sum2);
+    printf("sum2 is %d, should be 65\n", sum2);
+    assert(sum2 == 65);
 
     return EXIT_SUCCESS;
 }
