@@ -1,5 +1,6 @@
 # Temporary file for vi
 *.swp
+README
 
 # Prerequisites
 *.d
