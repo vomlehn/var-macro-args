@@ -1,31 +1,42 @@
-CFLAGS += -I.
+# Makefile for test var-macro-args.h. Checks with C and C++
 
-CXXFLAGS += -I.
+CFLAGS += -Iinclude
+CFLAGS += -g -ggdb
+
+CXXFLAGS += -Iinclude
+CXFLAGS += -g -ggdb
+
+# Kind of a cheat
+$(shell mkdir -p bin src)
 
 all: example-c example-cc
 
-test: test-c test-cc
-	./test-c
-	./test-cc
+.PHONY: test
+test: bin/test-c bin/test-cc
+	bin/test-c
+	bin/test-cc
 
-example-c: example.c var-macro-args.h
+bin/example-c: src/example.c include/var-macro-args.h
 	cc $(CFLAGS) -o $@ $(filter-out *.h,$^)
 
-example-cc: example.cc var-macro-args.h
+bin/example-cc: src/example.cc include/var-macro-args.h
 	cc $(CXXFLAGS) -o $@ $(filter-out *.h,$^)
 
-example.cc: example.c
+src/example.cc: src/example.c
 	cp $^ $@
 
-test-c: test.c var-macro-args.h
+bin/test-c: src/test.c include/var-macro-args.h
 	cc $(CFLAGS) -o $@ $(filter-out *.h,$^)
 
-test-cc: test.cc var-macro-args.h
+bin/test-cc: src/test.cc include/var-macro-args.h
 	cc $(CXXFLAGS) -o $@ $(filter-out *.h,$^)
 
-test.cc: test.c
+src/test.cc: tests/test.c
+	cp $^ $@
+
+src/test.c: tests/test.c
 	cp $^ $@
 
 .PHONY: clean
 clean:
-	rm -f example-c example-cc test-c test-cc
+	rm -rf src bin
