@@ -1,4 +1,4 @@
-# Makefile for test var-macro-args.h. Checks with C and C++
+# Makefile for test vararg-macros.h. Checks with C and C++
 
 CFLAGS += -Iinclude
 CFLAGS += -g -ggdb
@@ -16,10 +16,10 @@ test: bin/test-c bin/test-cc
 	bin/test-c
 	bin/test-cc
 
-bin/example-c: src/example.c include/var-macro-args.h
+bin/example-c: src/example.c include/vararg-macros.h
 	cc $(CFLAGS) -o $@ $(filter-out *.h,$^)
 
-bin/example-cc: src/example.cc include/var-macro-args.h
+bin/example-cc: src/example.cc include/vararg-macros.h
 	cc $(CXXFLAGS) -o $@ $(filter-out *.h,$^)
 
 src/example.c: tests/example.cc
@@ -28,10 +28,10 @@ src/example.c: tests/example.cc
 src/example.cc: tests/example.cc
 	cp $^ $@
 
-bin/test-c: src/test.c include/var-macro-args.h
+bin/test-c: src/test.c include/vararg-macros.h
 	cc $(CFLAGS) -o $@ $(filter-out *.h,$^)
 
-bin/test-cc: src/test.cc include/var-macro-args.h
+bin/test-cc: src/test.cc include/vararg-macros.h
 	cc $(CXXFLAGS) -o $@ $(filter-out *.h,$^)
 
 src/test.cc: tests/test.c

@@ -1,9 +1,9 @@
 /*
- * Example of using var-macro-args.h
+ * Example of using vararg-macros.h
  */
 
 #include <stdarg.h>
-#include <var-macro-args.h>
+#include <vararg-macros.h>
 
 #define PRINT_ITEM(arg)  arg
 #define PRINT_LIST(...) print_args(ARG_COUNT(__VA_ARGS__), \

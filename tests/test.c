@@ -1,12 +1,12 @@
 /*
- * Example of using var-macro-args.h
+ * Example of using vararg-macros.h
  */
 
 #include <assert.h>
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include <var-macro-args.h>
+#include <vararg-macros.h>
 
 #define PROCESS_ARG(arg)            sizeof(arg), &arg
 #define SEP                         ,
